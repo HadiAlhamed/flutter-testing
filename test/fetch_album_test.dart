@@ -9,19 +9,33 @@ import 'fetch_album_test.mocks.dart';
 
 @GenerateMocks([http.Client])
 void main() {
-  test('fetchAlbum returns an Album if http call was successful', () async {
-    MockClient mockClient = MockClient();
+  group("fetchAlbum success and failure ", () {
+    test('fetchAlbum returns an Album if http call was successful', () async {
+      MockClient mockClient = MockClient();
 
-    when(
-      mockClient.get(
-        Uri.parse('https://jsonplaceholder.typicode.com/albums/1'),
-      ),
-    ).thenAnswer(
-      (_) async =>
-          http.Response('{"userId": 1, "id": 1, "title": "Test Album"}', 200),
-    );
-    final value = await fetchAlbum(mockClient);
-    debugPrint('Fetched Album: $value');
-    expect(value, isA<Album>());
+      when(
+        mockClient.get(
+          Uri.parse('https://jsonplaceholder.typicode.com/albums/1'),
+        ),
+      ).thenAnswer(
+        (_) async =>
+            http.Response('{"userId": 1, "id": 1, "title": "Test Album"}', 200),
+      );
+      final value = await fetchAlbum(mockClient);
+      debugPrint('Fetched Album: $value');
+      expect(value, isA<Album>());
+    });
+
+    test('fetchAlbum throws an exception if http call failed', () async {
+      MockClient mockClient = MockClient();
+
+      when(
+        mockClient.get(
+          Uri.parse('https://jsonplaceholder.typicode.com/albums/1'),
+        ),
+      ).thenAnswer((_) async => http.Response('Not Found', 404));
+
+      expect(fetchAlbum(mockClient), throwsException);
+    });
   });
 }
