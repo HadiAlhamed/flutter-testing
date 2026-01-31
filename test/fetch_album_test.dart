@@ -10,8 +10,11 @@ import 'fetch_album_test.mocks.dart';
 @GenerateMocks([http.Client])
 void main() {
   group("fetchAlbum success and failure ", () {
+    late MockClient mockClient;
+    setUp(() {
+      mockClient = MockClient();
+    });
     test("FetchAlbum get method called once", () {
-      MockClient mockClient = MockClient();
       when(
         mockClient.get(
           Uri.parse('https://jsonplaceholder.typicode.com/albums/1'),
@@ -31,7 +34,6 @@ void main() {
     });
 
     test('fetchAlbum returns an Album if http call was successful', () async {
-      MockClient mockClient = MockClient();
       when(
         mockClient.get(
           Uri.parse('https://jsonplaceholder.typicode.com/albums/1'),
@@ -52,8 +54,6 @@ void main() {
     });
 
     test('fetchAlbum throws an exception if http call failed', () async {
-      MockClient mockClient = MockClient();
-
       when(
         mockClient.get(
           Uri.parse('https://jsonplaceholder.typicode.com/albums/1'),
