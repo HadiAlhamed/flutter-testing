@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:testing/main.dart';
+import 'package:testing/widgets/my_widget.dart';
 
 void main() {
   testWidgets("MyWidget has a title and message", (
