@@ -9,8 +9,8 @@ void main() {
     await widgetTester.pumpWidget(
       const MyWidget(title: "title", message: "message"),
     ); //renders the widget into the testing environment
-    Finder titleFinder = find.text('title');
-    Finder messageFinder = find.text('message');
+    final Finder titleFinder = find.text('title');
+    final Finder messageFinder = find.text('message');
 
     expect(titleFinder, findsOneWidget);
     expect(messageFinder, findsOneWidget);
@@ -18,14 +18,14 @@ void main() {
 
   testWidgets("Find Widget By Key", (WidgetTester widgetTester) async {
     await widgetTester.pumpWidget(MyWidget(title: "title", message: "message"));
-    Finder appBarFinder = find.byKey(Key("appBar"));
+    final Finder appBarFinder = find.byKey(Key("appBar"));
     expect(appBarFinder, findsOneWidget);
   });
   testWidgets("Find Widget By Type", (WidgetTester widgetTester) async {
     await widgetTester.pumpWidget(
       const MyWidget(title: "title", message: "message"),
     ); //renders the widget into the testing environment
-    Finder centerFinder = find.byType(Center);
+    final Finder centerFinder = find.byType(Center);
     expect(centerFinder, findsOneWidget);
   });
 
@@ -36,7 +36,19 @@ void main() {
     await widgetTester.pumpWidget(
       MyWidget(title: "title", message: "message", icon: icon),
     ); //renders the widget into the testing environment
-    Finder iconFinder = find.byWidget(icon);
+    final Finder iconFinder = find.byWidget(icon);
     expect(iconFinder, findsOneWidget);
+  });
+
+  //suppose we want to check whether something is present in the subtree of a widget
+  testWidgets("Find AppBar with title", (WidgetTester widgetTester) async {
+    await widgetTester.pumpWidget(MyWidget(title: "title", message: "message"));
+    final Finder appBarFinder = find.byKey(Key("appBar"));
+    expect(appBarFinder, findsOneWidget);
+    final appBarHasTitle = find.descendant(
+      of: appBarFinder,
+      matching: find.text('title'),
+    );
+    expect(appBarHasTitle, findsOneWidget);
   });
 }
