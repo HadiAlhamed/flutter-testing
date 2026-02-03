@@ -9,7 +9,8 @@ void main() {
     await widgetTester.pumpWidget(MaterialApp(home: const CounterPage()));
     Finder initialCounterFinder = find.text("0");
     expect(initialCounterFinder, findsOneWidget);
-    final Finder elevatedButtonFinder = find.byType(ElevatedButton);
+    final Finder elevatedButtonFinder = find.byKey(Key("addValue"));
+
     expect(elevatedButtonFinder, findsOneWidget);
 
     await widgetTester.tap(elevatedButtonFinder);
@@ -21,5 +22,21 @@ void main() {
     initialCounterFinder = find.text('0');
     expect(initialCounterFinder, findsNothing);
     expect(newCounterFinder, findsOneWidget);
+  });
+  testWidgets("Enter Text value", (WidgetTester widgetTester) async {
+    await widgetTester.pumpWidget(MaterialApp(home: const CounterPage()));
+
+    Finder resultFinder = find.text('2');
+    final Finder calculateBtnFinder = find.byKey(Key("calculate"));
+    final Finder textFieldFinder = find.byKey(Key("resultTextField"));
+    expect(resultFinder, findsOneWidget);
+    expect(calculateBtnFinder, findsOneWidget);
+    expect(textFieldFinder, findsOneWidget);
+    num number = 5;
+    await widgetTester.enterText(textFieldFinder, number.toString());
+    await widgetTester.tap(calculateBtnFinder);
+    await widgetTester.pumpAndSettle();
+    resultFinder = find.text("25");
+    expect(resultFinder, findsOneWidget);
   });
 }
