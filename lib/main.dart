@@ -7,7 +7,13 @@ void main() {
 class MyWidget extends StatelessWidget {
   final String title;
   final String message;
-  const MyWidget({super.key, required this.title, required this.message});
+  final Widget? icon;
+  const MyWidget({
+    super.key,
+    required this.title,
+    required this.message,
+    this.icon,
+  });
 
   // This widget is the root of your application.
   @override
@@ -18,8 +24,10 @@ class MyWidget extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: Scaffold(
-        appBar: AppBar(title: Text(title)),
-        body: Center(child: Text(message)),
+        appBar: AppBar(key: Key('appBar'), title: Text(title)),
+        body: Center(
+          child: Row(children: [Text(message), icon ?? SizedBox.shrink()]),
+        ),
       ),
     );
   }
